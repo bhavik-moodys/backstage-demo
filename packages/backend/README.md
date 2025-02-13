@@ -57,3 +57,72 @@ and
 
 - [Backstage Readme](https://github.com/backstage/backstage/blob/master/README.md)
 - [Backstage Documentation](https://backstage.io/docs)
+
+# Backstage and PostgreSQL Docker Setup
+
+This repository contains the setup for running Backstage with a PostgreSQL database using Docker Compose. Both services are built to run on the same custom Docker network.
+
+## Prerequisites
+
+- [Docker](https://docs.docker.com/get-docker/)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- [Node.js](https://nodejs.org/en/) and [Yarn](https://classic.yarnpkg.com/en/docs/install)
+
+## Project Structure
+
+├── docker-compose.yml
+├── README.md
+├── packages
+│ └── backend
+│   ├── Dockerfile
+│ └── (other backend source files)
+└── (other files)
+
+## Build Instructions
+
+Before building and running the Docker containers, you need to build your Backstage project locally:
+
+1. **Install Dependencies:**
+
+   ```bash
+   yarn install --frozen-lockfile
+
+2. **Compile TypeScript:**
+
+    ```bash
+    yarn tsc
+    
+3. **Build the Backend:**
+    ```bash
+    yarn build:backend
+
+4. **Build the Docker Image: If you prefer building the Docker image manually, run:**
+    ```bash
+    docker image build . -f packages/backend/Dockerfile --tag backstage:1.0.0
+
+Alternatively, Docker Compose will build the image for you when using the build instruction in the Compose file.
+
+## Running the Application
+
+1. **Start the Services with Docker Compose:**
+
+    ```bash
+    docker-compose up --build
+
+This command will:
+
+- **Build the Backstage image** (if not already built).
+- **Start both the PostgreSQL and Backstage containers** on the `backstage-net` network.
+- **Map PostgreSQL on host port 5432** and **Backstage on host port 7007**.
+
+### Accessing the Services
+
+- **Backstage:**  
+  Open a browser and navigate to [http://localhost:7007](http://localhost:7007).
+
+- **PostgreSQL:**  
+  You can use pgAdmin or any PostgreSQL client to connect to `localhost:5432` using the following credentials:
+  - **User:** backstage  
+  - **Password:** 1234  
+  - **Database:** backstage_db
+

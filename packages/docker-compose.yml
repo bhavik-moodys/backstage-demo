@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: backstage
+      POSTGRES_PASSWORD: "1234"
+      POSTGRES_DB: backstage_db
+    ports:
+      - "5432:5432"
+    networks:
+      - backstage-net
+
+  backstage:
+    # Use the Dockerfile in the packages/backend directory to build the image
+    build:
+      context: .
+      dockerfile: packages/backend/Dockerfile
+    image: backstage:1.0.0
+    container_name: backstage
+    restart: unless-stopped
+    environment:
+      # Ensure these match your app_config.yaml settings or are interpolated there.
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: backstage
+      DATABASE_PASSWORD: "1234"
+      DATABASE_NAME: backstage_db
+    ports:
+      - "7007:7007"
+    depends_on:
+      - postgres
+    networks:
+      - backstage-net
+
+networks:
+  backstage-net:
+    driver: bridge
