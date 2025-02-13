@@ -32,12 +32,13 @@ backend:
     # connection: ':memory:'
     client: pg
     connection:
-      host: localhost
+      host: postgres
       port: 5432
       user: backstage
       password: "1234"
       database: backstage_db
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
+  # docker run -p 7007: 7007 backstage:1.0.0 -e POSTGRES-USER="backstage"  -e POSTGRES-PASSWORD="1234"
 
 integrations:
   github:
@@ -73,13 +74,20 @@ auth:
   # # see https://backstage.io/docs/auth/ to learn about auth providers
   # providers:
   # See https://backstage.io/docs/auth/guest/provider
-  guest: {}  
+  # guest: {}  
   # environment: development
   # providers:
   #   github:
   #     development:
   #       clientId: Ov23liaEuJ6uU7F7sbMn
   #       clientSecret: 630eb1820620c01712b22ecc0bf4c5650f4f1a56
+  environment: development
+  providers:
+    guest: {}  
+    github:
+      development:
+        clientId: 'Ov23liaEuJ6uU7F7sbMn'
+        clientSecret: '630eb1820620c01712b22ecc0bf4c5650f4f1a56'
 
 scaffolder:
   # see https://backstage.io/docs/features/software-templates/configuration for software template options

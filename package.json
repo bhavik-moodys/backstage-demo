@@ -54,6 +54,7 @@
   },
   "packageManager": "yarn@4.4.1",
   "dependencies": {
+    "@backstage/plugin-github-actions": "^0.6.16",
     "pg": "^8.13.1"
   }
 }
